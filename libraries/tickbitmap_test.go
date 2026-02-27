@@ -4,6 +4,31 @@ import (
 	"testing"
 )
 
+func TestTickBitmap_FlipAndIsInitialized(t *testing.T) {
+	tb := NewTickBitmap()
+	tick := int32(10)
+	tickSpacing := int32(1)
+
+	if tb.IsInitialized(tick, tickSpacing) {
+		t.Fatal("tick should not be initialized initially")
+	}
+
+	if err := tb.FlipTick(tick, tickSpacing); err != nil {
+		t.Fatalf("FlipTick error: %v", err)
+	}
+
+	if !tb.IsInitialized(tick, tickSpacing) {
+		t.Fatal("tick should be initialized after FlipTick")
+	}
+
+	if err := tb.FlipTick(tick, tickSpacing); err != nil {
+		t.Fatalf("FlipTick error: %v", err)
+	}
+	if tb.IsInitialized(tick, tickSpacing) {
+		t.Fatal("tick should be uninitialized after second FlipTick")
+	}
+}
+
 func TestTickBitmap_FlipTick(t *testing.T) {
 	tb := NewTickBitmap()
 	tickSpacing := int32(10)

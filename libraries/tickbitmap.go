@@ -45,6 +45,32 @@ func position(tick int32) (wordPos int16, bitPos uint8) {
 	return
 }
 
+// IsInitialized checks if a given tick is initialized in the bitmap.
+//
+// Parameters:
+//   - tick: the tick to check
+//   - tickSpacing: spacing between ticks; tick must be a multiple of tickSpacing
+//
+// Returns:
+//   - true if the tick is initialized, false otherwise
+func (tb *TickBitmap) IsInitialized(tick int32, tickSpacing int32) bool {
+	if tick%tickSpacing != 0 {
+		return false // misaligned ticks cannot be initialized
+	}
+
+	compressed := compress(tick, tickSpacing)
+	wordPos, bitPos := position(compressed)
+
+	word, ok := tb.words[wordPos]
+	if !ok {
+		return false
+	}
+
+	mask := big.NewInt(1)
+	mask.Lsh(mask, uint(bitPos)) // create mask with 1 at bitPos
+
+	return new(big.Int).And(word, mask).Sign() != 0
+}
 
 // FlipTick flips the state of a tick in the bitmap (initialized ↔ uninitialized).
 //
