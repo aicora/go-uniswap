@@ -4,14 +4,13 @@ import (
 	"math/big"
 	"testing"
 
-	"github.com/holiman/uint256"
 	"github.com/stretchr/testify/require"
 )
 
 func TestMulDiv(t *testing.T) {
 	tests := []struct {
-		a, b, den uint64
-		want      uint64
+		a, b, den int64
+		want      int64
 		wantErr   bool
 	}{
 		{a: 10, b: 20, den: 5, want: 40},
@@ -21,9 +20,9 @@ func TestMulDiv(t *testing.T) {
 	}
 
 	for _, tt := range tests {
-		a := uint256.NewInt(tt.a)
-		b := uint256.NewInt(tt.b)
-		den := uint256.NewInt(tt.den)
+		a := big.NewInt(tt.a)
+		b := big.NewInt(tt.b)
+		den := big.NewInt(tt.den)
 
 		got, err := MulDiv(a, b, den)
 		if tt.wantErr {
@@ -38,8 +37,8 @@ func TestMulDiv(t *testing.T) {
 
 func TestMulDivRoundingUp(t *testing.T) {
 	tests := []struct {
-		a, b, den uint64
-		want      uint64
+		a, b, den int64
+		want      int64
 		wantErr   bool
 	}{
 		{a: 10, b: 20, den: 5, want: 40},
@@ -49,9 +48,9 @@ func TestMulDivRoundingUp(t *testing.T) {
 	}
 
 	for _, tt := range tests {
-		a := uint256.NewInt(tt.a)
-		b := uint256.NewInt(tt.b)
-		den := uint256.NewInt(tt.den)
+		a := big.NewInt(tt.a)
+		b := big.NewInt(tt.b)
+		den := big.NewInt(tt.den)
 
 		got, err := MulDivRoundingUp(a, b, den)
 		if tt.wantErr {
@@ -66,8 +65,8 @@ func TestMulDivRoundingUp(t *testing.T) {
 
 func TestMulMod(t *testing.T) {
 	tests := []struct {
-		a, b, m uint64
-		want    uint64
+		a, b, m int64
+		want    int64
 	}{
 		{a: 10, b: 20, m: 6, want: 2},
 		{a: 123, b: 456, m: 1000, want: 88},
@@ -75,9 +74,9 @@ func TestMulMod(t *testing.T) {
 	}
 
 	for _, tt := range tests {
-		a := uint256.NewInt(tt.a)
-		b := uint256.NewInt(tt.b)
-		m := uint256.NewInt(tt.m)
+		a := big.NewInt(tt.a)
+		b := big.NewInt(tt.b)
+		m := big.NewInt(tt.m)
 
 		got := MulMod(a, b, m)
 		gotUint64 := got.Uint64()

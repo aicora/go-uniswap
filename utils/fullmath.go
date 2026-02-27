@@ -4,8 +4,6 @@ import (
 	"math/big"
 
 	"github.com/pkg/errors"
-
-	"github.com/holiman/uint256"
 )
 
 var (
@@ -13,75 +11,75 @@ var (
 	ErrZeroDenominator = errors.New("denominator is zero")
 )
 
-// MulDiv calculates floor(a * b / denominator) using only uint256.Int.
+// MulDiv calculates floor(a * b / denominator) with arbitrary precision using big.Int.
 //
-// This function performs full 256-bit precision multiplication and division
-// without converting to big.Int. It returns an error if the denominator is zero.
+// This function performs the multiplication and division in full precision and
+// returns an error if the denominator is zero.
 //
 // Parameters:
-//   - a: the multiplicand as a uint256.Int
-//   - b: the multiplier as a uint256.Int
-//   - denominator: the divisor as a uint256.Int
+//   - a: multiplicand
+//   - b: multiplier
+//   - denominator: divisor
 //
 // Returns:
-//   - *uint256.Int: the result of floor(a * b / denominator)
-//   - error: ErrZeroDenominator if denominator is zero
-func MulDiv(a, b, denominator *uint256.Int) (*uint256.Int, error) {
-	if denominator.IsZero() {
+//   - *big.Int: floor(a * b / denominator)
+//   - error: if denominator == 0
+func MulDiv(a, b, denominator *big.Int) (*big.Int, error) {
+	if denominator.Sign() == 0 {
 		return nil, ErrZeroDenominator
 	}
 
-	prod := new(uint256.Int).Mul(a, b)
-	res := new(uint256.Int).Div(prod, denominator)
+	prod := new(big.Int).Mul(a, b) // a * b
+	res := new(big.Int).Div(prod, denominator)
 
 	return res, nil
 }
 
-// MulDivRoundingUp calculates ceil(a * b / denominator) using only uint256.Int.
+// MulDivRoundingUp calculates ceil(a * b / denominator) with arbitrary precision using big.Int.
 //
-// This function performs full 256-bit precision multiplication and division
-// and rounds up the result if there is any remainder.
-// It returns an error if the denominator is zero.
+// If the division is not exact, the result is rounded up by 1.
+// Returns an error if denominator is zero.
 //
 // Parameters:
-//   - a: the multiplicand as a uint256.Int
-//   - b: the multiplier as a uint256.Int
-//   - denominator: the divisor as a uint256.Int
+//   - a: multiplicand
+//   - b: multiplier
+//   - denominator: divisor
 //
 // Returns:
-//   - *uint256.Int: the result of ceil(a * b / denominator)
-//   - error: ErrZeroDenominator if denominator is zero
-func MulDivRoundingUp(a, b, denominator *uint256.Int) (*uint256.Int, error) {
-	if denominator.IsZero() {
+//   - *big.Int: ceil(a * b / denominator)
+//   - error: if denominator == 0
+func MulDivRoundingUp(a, b, denominator *big.Int) (*big.Int, error) {
+	if denominator.Sign() == 0 {
 		return nil, ErrZeroDenominator
 	}
 
-	prod := new(uint256.Int).Mul(a, b)
-	res := new(uint256.Int).Div(prod, denominator)
+	// Multiply first
+	prod := new(big.Int).Mul(a, b)
 
-	mod := new(uint256.Int).Mod(prod, denominator)
-	if !mod.IsZero() {
-		res = res.Add(res, uint256.NewInt(1))
+	// Divide to get floor
+	res := new(big.Int).Div(prod, denominator)
+
+	// Check remainder to round up
+	mod := new(big.Int).Mod(prod, denominator)
+	if mod.Sign() > 0 {
+		res.Add(res, big.NewInt(1))
 	}
 
 	return res, nil
 }
 
-// MulMod calculates (a * b) % m using only uint256.Int.
-//
-// Performs 256-bit multiplication followed by modulo operation.
-// This function avoids conversion to big.Int, making it suitable for high-performance scenarios.
+// MulMod calculates (a * b) % m using big.Int arithmetic.
 //
 // Parameters:
-//   - a: the multiplicand as a uint256.Int
-//   - b: the multiplier as a uint256.Int
-//   - m: the modulus as a uint256.Int
+//   - a: multiplicand
+//   - b: multiplier
+//   - m: modulus
 //
 // Returns:
-//   - *uint256.Int: the result of (a * b) % m
-func MulMod(a, b, m *uint256.Int) *uint256.Int {
-	res := new(uint256.Int).Mul(a, b)
-	return res.Mod(res, m)
+//   - *big.Int: result of (a * b) mod m
+func MulMod(a, b, m *big.Int) *big.Int {
+	res := new(big.Int).Mul(a, b) // a * b
+	return res.Mod(res, m)        // (a * b) % m
 }
 
 // AbsBigInt returns the absolute value of a big.Int.
