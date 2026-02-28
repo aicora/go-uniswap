@@ -10,6 +10,6 @@ updates:
     rebase-strategy: "auto"
     open-pull-requests-limit: 10
     reviewers:
-      - "openchat-im"
+      - "aicora"
     assignees:
-      - "openchat-im"
+      - "aicora"

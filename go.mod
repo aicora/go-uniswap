@@ -1,4 +1,4 @@
-module github.com/openchat-im/go-uniswap
+module github.com/aicora/go-uniswap
 
 go 1.23.2
 
