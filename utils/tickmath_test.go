@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"errors"
 	"math/big"
 	"testing"
 
@@ -61,5 +62,54 @@ func TestSqrtPriceTickRoundTrip(t *testing.T) {
 		tick2, err := GetTickAtSqrtPrice(sqrtPrice)
 		require.NoError(t, err)
 		require.True(t, tick2 == tick || tick2 == tick-1 || tick2 == tick+1, "tick roundtrip mismatch")
+	}
+}
+
+func TestCheckTicks(t *testing.T) {
+	tests := []struct {
+		name      string
+		tickLower int32
+		tickUpper int32
+		wantErr   error
+	}{
+		{
+			name:      "valid range",
+			tickLower: -100,
+			tickUpper: 100,
+			wantErr:   nil,
+		},
+		{
+			name:      "ticks misordered",
+			tickLower: 50,
+			tickUpper: 50,
+			wantErr:   ErrTicksMisordered,
+		},
+		{
+			name:      "tickLower out of bounds",
+			tickLower: MinTick - 1,
+			tickUpper: 0,
+			wantErr:   ErrTickLowerOutOfBounds,
+		},
+		{
+			name:      "tickUpper out of bounds",
+			tickLower: 0,
+			tickUpper: MaxTick + 1,
+			wantErr:   ErrTickUpperOutOfBounds,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			err := CheckTicks(tt.tickLower, tt.tickUpper)
+			if tt.wantErr == nil {
+				if err != nil {
+					t.Errorf("expected nil error, got %v", err)
+				}
+			} else {
+				if !errors.Is(err, tt.wantErr) {
+					t.Errorf("expected error %v, got %v", tt.wantErr, err)
+				}
+			}
+		})
 	}
 }

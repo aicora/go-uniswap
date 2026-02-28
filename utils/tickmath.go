@@ -1,8 +1,9 @@
 package utils
 
 import (
-	"errors"
 	"math/big"
+
+	"github.com/pkg/errors"
 )
 
 const (
@@ -26,6 +27,9 @@ var (
 var (
 	ErrInvalidTick      = errors.New("invalid tick")
 	ErrInvalidSqrtPrice = errors.New("invalid sqrt price")
+	ErrTicksMisordered     = errors.New("ticks misordered")
+    ErrTickLowerOutOfBounds = errors.New("tickLower out of bounds")
+    ErrTickUpperOutOfBounds = errors.New("tickUpper out of bounds")
 )
 
 // mulShift multiplies val by mulBy and then right-shifts the result by 128 bits.
@@ -202,4 +206,47 @@ func GetTickAtSqrtPrice(sqrtPriceX96 *big.Int) (int, error) {
 	} else {
 		return int(tickLow), nil
 	}
+}
+
+// CheckTicks validates that a given tick range is within allowed bounds.
+//
+// In Uniswap-style AMMs, ticks define the price grid boundaries.
+// This function ensures the following conditions:
+//   1. tickLower must be less than tickUpper, otherwise ErrTicksMisordered is returned.
+//   2. tickLower must not be below the minimum system tick (MinTick), otherwise ErrTickLowerOutOfBounds is returned.
+//   3. tickUpper must not exceed the maximum system tick (MaxTick), otherwise ErrTickUpperOutOfBounds is returned.
+//
+// Errors are wrapped with context using errors.Wrapf, preserving the stack trace
+// and allowing callers to use errors.Is for exact error type checks.
+//
+// Parameters:
+//   - tickLower: lower bound of the tick range (int32)
+//   - tickUpper: upper bound of the tick range (int32)
+//
+// Returns:
+//   - error: a wrapped error if the tick range is invalid; otherwise nil
+//
+// Example:
+//
+//    err := CheckTicks(-100, 200)
+//    if err != nil {
+//        if errors.Is(err, ErrTicksMisordered) {
+//            fmt.Println("tickLower >= tickUpper")
+//        } else if errors.Is(err, ErrTickLowerOutOfBounds) {
+//            fmt.Println("tickLower out of bounds")
+//        } else if errors.Is(err, ErrTickUpperOutOfBounds) {
+//            fmt.Println("tickUpper out of bounds")
+//        }
+//    }
+func CheckTicks(tickLower, tickUpper int32) error {
+    if tickLower >= tickUpper {
+        return errors.Wrapf(ErrTicksMisordered, "tickLower=%d >= tickUpper=%d", tickLower, tickUpper)
+    }
+    if tickLower < MinTick {
+        return errors.Wrapf(ErrTickLowerOutOfBounds, "tickLower=%d < MinTick=%d", tickLower, MinTick)
+    }
+    if tickUpper > MaxTick {
+        return errors.Wrapf(ErrTickUpperOutOfBounds, "tickUpper=%d > MaxTick=%d", tickUpper, MaxTick)
+    }
+    return nil
 }
