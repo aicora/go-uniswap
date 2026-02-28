@@ -5,7 +5,7 @@ import (
 
 	"github.com/pkg/errors"
 
-	"github.com/openchat-im/go-uniswap/utils"
+	"github.com/aicora/go-uniswap/utils"
 )
 
 var (
