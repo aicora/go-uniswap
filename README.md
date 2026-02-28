@@ -31,6 +31,12 @@ Detailed changes for each release are documented in the [release notes](https://
 
 [![Star History Chart](https://api.star-history.com/svg?repos=aicora/go-uniswap&type=timeline&legend=top-left)](https://www.star-history.com/#aicora/go-uniswap&type=timeline&legend=top-left)
 
+## Contribution
+
+Thank you to all the people who already contributed to go-uniswap!
+
+![Contributors](https://contrib.rocks/image?repo=aicora/go-uniswap)
+
 ## License
 
 [MIT](https://opensource.org/licenses/MIT)
