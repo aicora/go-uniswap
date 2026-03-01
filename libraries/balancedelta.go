@@ -57,20 +57,12 @@ var ZeroBalanceDelta = BalanceDelta{
 	Amount1: big.NewInt(0),
 }
 
-// NewBalanceDelta constructs a new BalanceDelta while enforcing int128 bounds.
-//
-// Returns ErrInt128Overflow if either amount exceeds the signed int128 range.
-//
-// This ensures strict compatibility with Solidity's BalanceDelta type.
-func NewBalanceDelta(amount0, amount1 *big.Int) (BalanceDelta, error) {
-	if !fitsInt128(amount0) || !fitsInt128(amount1) {
-		return ZeroBalanceDelta, ErrInt128Overflow
-	}
-
+// NewBalanceDelta returns a new BalanceDelta value.
+func NewBalanceDelta(amount0, amount1 *big.Int) (BalanceDelta) {
 	return BalanceDelta{
 		Amount0: new(big.Int).Set(amount0),
 		Amount1: new(big.Int).Set(amount1),
-	}, nil
+	}
 }
 
 // Add returns the element-wise sum of two BalanceDelta values.
@@ -78,7 +70,7 @@ func NewBalanceDelta(amount0, amount1 *big.Int) (BalanceDelta, error) {
 // Equivalent to Solidity's `add(BalanceDelta a, BalanceDelta b)`.
 //
 // The result is validated against int128 bounds.
-func (a BalanceDelta) Add(b BalanceDelta) (BalanceDelta, error) {
+func (a BalanceDelta) Add(b BalanceDelta) (BalanceDelta) {
 	res0 := new(big.Int).Add(a.Amount0, b.Amount0)
 	res1 := new(big.Int).Add(a.Amount1, b.Amount1)
 
@@ -90,7 +82,7 @@ func (a BalanceDelta) Add(b BalanceDelta) (BalanceDelta, error) {
 // Equivalent to Solidity's `sub(BalanceDelta a, BalanceDelta b)`.
 //
 // The result is validated against int128 bounds.
-func (a BalanceDelta) Sub(b BalanceDelta) (BalanceDelta, error) {
+func (a BalanceDelta) Sub(b BalanceDelta) (BalanceDelta) {
 	res0 := new(big.Int).Sub(a.Amount0, b.Amount0)
 	res1 := new(big.Int).Sub(a.Amount1, b.Amount1)
 
@@ -101,15 +93,4 @@ func (a BalanceDelta) Sub(b BalanceDelta) (BalanceDelta, error) {
 func (a BalanceDelta) Equal(b BalanceDelta) bool {
 	return a.Amount0.Cmp(b.Amount0) == 0 &&
 		a.Amount1.Cmp(b.Amount1) == 0
-}
-
-// fitsInt128 returns true if x is within the signed int128 range.
-//
-// Range:
-//   [-2^127, 2^127 - 1]
-//
-// This mirrors Solidity's int128 overflow semantics.
-func fitsInt128(x *big.Int) bool {
-	return x.Cmp(int128Max) <= 0 &&
-		x.Cmp(int128Min) >= 0
 }

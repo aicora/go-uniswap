@@ -13,8 +13,8 @@ func TestPositionManager_GetAndUpdate(t *testing.T) {
 	pm := NewPositionManager()
 
 	owner := common.HexToAddress("0x1234567890123456789012345678901234567890")
-	tickLower := int32(-100)
-	tickUpper := int32(100)
+	tickLower := int(-100)
+	tickUpper := int(100)
 	var salt [32]byte
 	copy(salt[:], []byte("salt-unique-value-1234567890"))
 
@@ -78,8 +78,8 @@ func TestPositionManager_MultiplePositions(t *testing.T) {
 
 func TestCalculatePositionKeyConsistency(t *testing.T) {
 	owner := common.HexToAddress("0x3333333333333333333333333333333333333333")
-	tickLower := int32(-50)
-	tickUpper := int32(50)
+	tickLower := int(-50)
+	tickUpper := int(50)
 	var salt [32]byte
 	copy(salt[:], []byte("salt-test"))
 

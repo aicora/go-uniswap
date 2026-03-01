@@ -3,6 +3,8 @@ package utils
 import (
 	"errors"
 	"testing"
+
+	"github.com/stretchr/testify/require"
 )
 
 func TestNewFee(t *testing.T) {
@@ -103,5 +105,67 @@ func TestInitialValue_Dynamic(t *testing.T) {
 
 	if val != 0 {
 		t.Fatalf("expected 0, got %d", val)
+	}
+}
+
+func TestLPFee_RemoveOverrideFlagAndValidate(t *testing.T) {
+
+	tests := []struct {
+		name        string
+		input       LPFee
+		expectFee   LPFee
+		expectError bool
+	}{
+		{
+			name:        "valid fee without override",
+			input:       LPFee(3000),
+			expectFee:   LPFee(3000),
+			expectError: false,
+		},
+		{
+			name:        "valid fee with override flag",
+			input:       LPFee(overrideFlag | 3000),
+			expectFee:   LPFee(3000),
+			expectError: false,
+		},
+		{
+			name:        "zero fee",
+			input:       LPFee(0),
+			expectFee:   LPFee(0),
+			expectError: false,
+		},
+		{
+			name:        "only override flag",
+			input:       LPFee(overrideFlag),
+			expectFee:   LPFee(0),
+			expectError: false,
+		},
+		{
+			name:        "invalid fee over max",
+			input:       LPFee(overrideFlag | (MaxLPFee + 1)),
+			expectFee:   0,
+			expectError: true,
+		},
+		{
+			name:        "invalid fee without override",
+			input:       LPFee(MaxLPFee + 1),
+			expectFee:   0,
+			expectError: true,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+
+			fee, err := tt.input.RemoveOverrideFlagAndValidate()
+
+			if tt.expectError {
+				require.Error(t, err)
+				return
+			}
+
+			require.NoError(t, err)
+			require.Equal(t, tt.expectFee, fee)
+		})
 	}
 }

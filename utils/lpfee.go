@@ -82,6 +82,14 @@ func (f LPFee) RemoveOverride() LPFee {
 	return LPFee(uint32(f) &^ overrideFlag)
 }
 
+func (f LPFee) RemoveOverrideFlagAndValidate() (LPFee, error) {
+	fee := f.RemoveOverride()
+	if err := fee.Validate(); err != nil { 
+		return 0, err 
+	} 
+	return fee, nil
+}
+
 // WithOverride sets the override flag.
 func (f LPFee) WithOverride() LPFee {
 	return LPFee(uint32(f) | overrideFlag)

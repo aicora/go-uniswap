@@ -69,8 +69,8 @@ func TestSqrtPriceTickRoundTrip(t *testing.T) {
 func TestCheckTicks(t *testing.T) {
 	tests := []struct {
 		name      string
-		tickLower int32
-		tickUpper int32
+		tickLower int
+		tickUpper int
 		wantErr   error
 	}{
 		{

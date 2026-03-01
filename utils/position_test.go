@@ -10,8 +10,8 @@ import (
 
 func TestCalculatePositionKey(t *testing.T) {
 	owner := common.HexToAddress("0x0123456789abcdef0123456789abcdef01234567")
-	tickLower := int32(-120)
-	tickUpper := int32(150)
+	tickLower := int(-120)
+	tickUpper := int(150)
 	salt := [32]byte{}
 
 	key := CalculatePositionKey(owner, tickLower, tickUpper, salt)

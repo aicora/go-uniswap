@@ -243,7 +243,7 @@ func GetTickAtSqrtPrice(sqrtPriceX96 *big.Int) (int, error) {
 //            fmt.Println("tickUpper out of bounds")
 //        }
 //    }
-func CheckTicks(tickLower, tickUpper int32) error {
+func CheckTicks(tickLower, tickUpper int) error {
     if tickLower >= tickUpper {
         return errors.Wrapf(ErrTicksMisordered, "tickLower=%d >= tickUpper=%d", tickLower, tickUpper)
     }

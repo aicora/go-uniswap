@@ -4,9 +4,9 @@ import (
 	"math/big"
 )
 
-// MaxFee defines the maximum swap fee in hundredths of a bip (1e6 = 100%).
+// MaxSwapFee defines the maximum swap fee in hundredths of a bip (1e6 = 100%).
 var (
-	MaxFee = new(big.Int).Exp(big.NewInt(10), big.NewInt(6), nil)
+	MaxSwapFee = new(big.Int).Exp(big.NewInt(10), big.NewInt(6), nil)
 )
 
 // ComputeSwapStep calculates the result of a single swap step within a tick.
@@ -51,7 +51,7 @@ func ComputeSwapStep(sqrtPriceCurrentX96, sqrtPriceTargetX96, liquidity, amountR
 
 	if exactIn {
 		// deduct fee from remaining input
-		amountRemainingLessFee := new(big.Int).Div(new(big.Int).Mul(amountRemaining, new(big.Int).Sub(MaxFee, big.NewInt(int64(feePips)))), MaxFee)
+		amountRemainingLessFee := new(big.Int).Div(new(big.Int).Mul(amountRemaining, new(big.Int).Sub(MaxSwapFee, big.NewInt(int64(feePips)))), MaxSwapFee)
 		if zeroForOne {
 			amountIn, err = GetAmount0Delta(sqrtPriceTargetX96, sqrtPriceCurrentX96, liquidity, true)
 			if err != nil {
@@ -135,7 +135,7 @@ func ComputeSwapStep(sqrtPriceCurrentX96, sqrtPriceTargetX96, liquidity, amountR
 		// target not reached, remainder is fee
 		feeAmount = new(big.Int).Sub(amountRemaining, amountIn)
 	} else {
-		feeAmount, err = MulDivRoundingUp(amountIn, big.NewInt(int64(feePips)), new(big.Int).Sub(MaxFee, big.NewInt(int64(feePips))))
+		feeAmount, err = MulDivRoundingUp(amountIn, big.NewInt(int64(feePips)), new(big.Int).Sub(MaxSwapFee, big.NewInt(int64(feePips))))
 		if err != nil {
 			return
 		}
