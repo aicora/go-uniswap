@@ -96,7 +96,7 @@ func (pm *PoolManager) Initialize(key libraries.PoolKey, sqrtPriceX96 *big.Int) 
 
 	pool := libraries.NewPool()
 
-	tick, err := pool.Initialize(sqrtPriceX96, utils.LPFee(lpFee))
+	tick, err := pool.Initialize(sqrtPriceX96, libraries.LPFee(lpFee))
 	if err != nil {
 		return 0, err
 	}
@@ -120,7 +120,7 @@ func (pm *PoolManager) Initialize(key libraries.PoolKey, sqrtPriceX96 *big.Int) 
 //
 // State Changes:
 //   - Mutates pool protocol fee configuration
-func (pm *PoolManager) SetProcolFee(key libraries.PoolKey, newProtocolFee utils.ProtocolFee) error {
+func (pm *PoolManager) SetProcolFee(key libraries.PoolKey, newProtocolFee libraries.ProtocolFee) error {
 	id, err := key.ToId()
 	if err != nil {
 		return err

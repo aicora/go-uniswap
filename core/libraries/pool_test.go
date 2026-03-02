@@ -15,7 +15,7 @@ func TestInitialize(t *testing.T) {
 
 	price, _ := utils.GetSqrtPriceAtTick(0)
 	
-	tick, err := p.Initialize(price, utils.LPFee(3000))
+	tick, err := p.Initialize(price, LPFee(3000))
 	assert.NoError(t, err)
 	assert.Equal(t, 0, tick)
 
@@ -27,16 +27,16 @@ func TestInitializeTwice(t *testing.T) {
 	p := NewPool()
 
 	price, _ := utils.GetSqrtPriceAtTick(0)
-	_, _ = p.Initialize(price, utils.LPFee(3000))
+	_, _ = p.Initialize(price, LPFee(3000))
 
-	_, err := p.Initialize(price, utils.LPFee(3000))
+	_, err := p.Initialize(price, LPFee(3000))
 	assert.ErrorIs(t, err, ErrPoolAlreadyInitialized)
 }
 
 func TestPool_SetProtocolFee(t *testing.T) {
 	p := NewPool()
 
-	err := p.SetProtocolFee(utils.ProtocolFee(500))
+	err := p.SetProtocolFee(ProtocolFee(500))
 	if err == nil {
 		t.Fatal("expected error when pool not initialized")
 	}
@@ -45,7 +45,7 @@ func TestPool_SetProtocolFee(t *testing.T) {
 
 	p.Initialize(price, 0)
 
-	newFee := utils.ProtocolFee(300)
+	newFee := ProtocolFee(300)
 	err = p.SetProtocolFee(newFee)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -59,7 +59,7 @@ func TestPool_SetProtocolFee(t *testing.T) {
 func TestPool_SetLPFee(t *testing.T) {
 	p := NewPool()
 
-	err := p.SetLPFee(utils.LPFee(3000))
+	err := p.SetLPFee(LPFee(3000))
 	if err == nil {
 		t.Fatal("expected error when pool not initialized")
 	}
@@ -68,7 +68,7 @@ func TestPool_SetLPFee(t *testing.T) {
 
 	p.Initialize(price, 0)
 
-	newFee := utils.LPFee(2500)
+	newFee := LPFee(2500)
 	err = p.SetLPFee(newFee)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -141,7 +141,7 @@ func TestDonate_NoLiquidity(t *testing.T) {
 	p := NewPool()
 
 	price, _ := utils.GetSqrtPriceAtTick(0)
-	_, _ = p.Initialize(price, utils.LPFee(3000))
+	_, _ = p.Initialize(price, LPFee(3000))
 
 	_, err := p.Donate(big.NewInt(1000), big.NewInt(0))
 	assert.ErrorIs(t, err, ErrNoLiquidity)
@@ -151,7 +151,7 @@ func TestModifyLiquidity_InRange(t *testing.T) {
 	p := NewPool()
 
 	price, _ := utils.GetSqrtPriceAtTick(0)
-	_, _ = p.Initialize(price, utils.LPFee(3000))
+	_, _ = p.Initialize(price, LPFee(3000))
 
 	params := ModifyLiquidityParams{
 		Owner:         common.HexToAddress("0x0123456789abcdef0123456789abcdef01234567"),
@@ -174,7 +174,7 @@ func TestModifyLiquidity_OutOfRange1(t *testing.T) {
 	p := NewPool()
 
 	price, _ := utils.GetSqrtPriceAtTick(-70)
-	_, _ = p.Initialize(price, utils.LPFee(3000))
+	_, _ = p.Initialize(price, LPFee(3000))
 	
 	params := ModifyLiquidityParams{
 		Owner:         common.HexToAddress("0x0123456789abcdef0123456789abcdef01234567"),
@@ -197,7 +197,7 @@ func TestModifyLiquidity_OutOfRange2(t *testing.T) {
 	p := NewPool()
 
 	price, _ := utils.GetSqrtPriceAtTick(70)
-	_, _ = p.Initialize(price, utils.LPFee(3000))
+	_, _ = p.Initialize(price, LPFee(3000))
 	
 	params := ModifyLiquidityParams{
 		Owner:         common.HexToAddress("0x0123456789abcdef0123456789abcdef01234567"),
@@ -220,7 +220,7 @@ func TestModifyLiquidity_Remove(t *testing.T) {
 	p := NewPool()
 
 	price, _ := utils.GetSqrtPriceAtTick(0)
-	_, _ = p.Initialize(price, utils.LPFee(3000))
+	_, _ = p.Initialize(price, LPFee(3000))
 
 	params := ModifyLiquidityParams{
 		Owner:         common.HexToAddress("0x0123456789abcdef0123456789abcdef01234567"),
@@ -243,7 +243,7 @@ func TestDonate_WithLiquidity(t *testing.T) {
 	p := NewPool()
 
 	price, _ := utils.GetSqrtPriceAtTick(0)
-	_, _ = p.Initialize(price, utils.LPFee(3000))
+	_, _ = p.Initialize(price, LPFee(3000))
 
 	params := ModifyLiquidityParams{
 		Owner:         common.HexToAddress("0x0123456789abcdef0123456789abcdef01234567"),
@@ -265,8 +265,8 @@ func TestSwapVariousScenarios(t *testing.T) {
 	p := NewPool()
 	
 	price, _ := utils.GetSqrtPriceAtTick(300)
-	_, _ = p.Initialize(price, utils.LPFee(3000))
-	pfee, _ := utils.NewProtocolFee(10, 10)
+	_, _ = p.Initialize(price, LPFee(3000))
+	pfee, _ := NewProtocolFee(10, 10)
 	p.SetProtocolFee(pfee)
 	delta, _, _ := p.ModifyLiquidity(ModifyLiquidityParams{
 		Owner:          common.HexToAddress("0x0123456789abcdef0123456789abcdef01234567"),

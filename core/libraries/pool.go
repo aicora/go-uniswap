@@ -43,8 +43,8 @@ var (
 type Slot0 struct {
     SqrtPriceX96 *big.Int
     Tick         int
-    ProtocolFee  utils.ProtocolFee
-    LPFee        utils.LPFee
+    ProtocolFee  ProtocolFee
+    LPFee        LPFee
 }
 
 // Pool implements the concentrated liquidity AMM state machine.
@@ -95,7 +95,7 @@ func NewPool() *Pool {
 //
 // It computes Tick from sqrtPriceX96 and sets Slot0.
 // Can only be executed once.
-func (p *Pool) Initialize(sqrtPriceX96 *big.Int, lpFee utils.LPFee) (int, error) {
+func (p *Pool) Initialize(sqrtPriceX96 *big.Int, lpFee LPFee) (int, error) {
 	if p.slot0.SqrtPriceX96 != nil && p.slot0.SqrtPriceX96.Cmp(big.NewInt(0)) != 0 {
 		return 0, ErrPoolAlreadyInitialized
 	}
@@ -124,7 +124,7 @@ func (p *Pool) CheckPoolInitialized() error {
 }
 
 // SetProtocolFee updates protocol fee configuration.
-func (p *Pool) SetProtocolFee(protocolFee utils.ProtocolFee) error {
+func (p *Pool) SetProtocolFee(protocolFee ProtocolFee) error {
 	if err := p.CheckPoolInitialized(); err != nil {
 		return err
 	}
@@ -134,7 +134,7 @@ func (p *Pool) SetProtocolFee(protocolFee utils.ProtocolFee) error {
 }
 
 // SetLPFee updates liquidity provider fee.
-func (p *Pool) SetLPFee(lpFee utils.LPFee) error {
+func (p *Pool) SetLPFee(lpFee LPFee) error {
 	if err := p.CheckPoolInitialized(); err != nil {
 		return err
 	}
@@ -541,7 +541,7 @@ type SwapParams struct {
 	SqrtPriceLimitX96 *big.Int
 
 	// Optional LP fee override (in hundredths of a bip, e.g. 3000 = 0.3%)
-	LpFeeOverride utils.LPFee
+	LpFeeOverride LPFee
 }
 
 // Swap executes a token swap within the Pool according to the provided parameters.
@@ -630,7 +630,7 @@ func (p *Pool) Swap(params SwapParams) (swapDelta BalanceDelta, amountToProtocol
 	if protocolFee == 0 {
 		swapFee = uint32(lpFee)
 	} else {
-		swapFee = utils.CalculateSwapFee(protocolFee, lpFee)
+		swapFee = CalculateSwapFee(protocolFee, lpFee)
 	}
 
 	if big.NewInt(int64(swapFee)).Cmp(utils.MaxSwapFee) > 0 {
@@ -724,7 +724,7 @@ func (p *Pool) Swap(params SwapParams) (swapDelta BalanceDelta, amountToProtocol
 			} else {
 				totalIn := new(big.Int).Add(step.AmountIn, step.FeeAmount)
 				delta = new(big.Int).Mul(totalIn, big.NewInt(int64(protocolFee)))
-				delta.Div(delta, big.NewInt(int64(utils.PipsDenominator)))
+				delta.Div(delta, big.NewInt(int64(PipsDenominator)))
 			}
 			step.FeeAmount.Sub(step.FeeAmount, delta)
 			amountToProtocol.Add(amountToProtocol, delta)

@@ -3,7 +3,6 @@ package libraries
 import (
 	"testing"
 
-	"github.com/aicora/go-uniswap/core/utils"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/stretchr/testify/require"
 )
@@ -25,7 +24,7 @@ func TestPoolKey_ToId(t *testing.T) {
 		name       string
 		currency0  ICurrency
 		currency1  ICurrency
-		fee        utils.LPFee
+		fee        LPFee
 		tickSpace  int
 		hooks      IHooks
 		wantSwap   bool 

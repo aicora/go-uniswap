@@ -4,7 +4,6 @@ import (
 	"encoding/hex"
 	"math/big"
 
-	"github.com/aicora/go-uniswap/core/utils"
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/crypto"
@@ -36,7 +35,7 @@ func (p PoolId) String() string {
 type PoolKey struct {
 	Currency0   ICurrency
 	Currency1   ICurrency
-	Fee         utils.LPFee
+	Fee         LPFee
 	TickSpacing int
 	Hooks       IHooks
 }

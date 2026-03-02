@@ -13,7 +13,7 @@ import (
 )
 
 func mockPoolKey() libraries.PoolKey {
-	lpfee, _ := utils.NewFee(3000)
+	lpfee, _ := libraries.NewFee(3000)
 	return libraries.PoolKey{
 		Currency0:   libraries.NewCurrency(1, common.HexToAddress("0x0000000000000000000000000000000000000001"), 18, "A", "TokenA"),
 		Currency1:   libraries.NewCurrency(1, common.HexToAddress("0x0000000000000000000000000000000000000002"), 6, "B", "TokenB"),
@@ -136,7 +136,7 @@ func TestPoolManager_SwapIntegration(t *testing.T) {
 	key := libraries.PoolKey{
 		Currency0:   libraries.NewCurrency(1, common.HexToAddress("0x0000000000000000000000000000000000000001"), 18, "A", "TokenA"),
 		Currency1:   libraries.NewCurrency(1, common.HexToAddress("0x0000000000000000000000000000000000000002"), 6, "B", "TokenB"),
-		Fee:         utils.LPFee(3000),
+		Fee:         libraries.LPFee(3000),
 		TickSpacing: 60,
 	}
 
