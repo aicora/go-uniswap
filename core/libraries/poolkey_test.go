@@ -3,7 +3,7 @@ package libraries
 import (
 	"testing"
 
-	"github.com/aicora/go-uniswap/utils"
+	"github.com/aicora/go-uniswap/core/utils"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/stretchr/testify/require"
 )

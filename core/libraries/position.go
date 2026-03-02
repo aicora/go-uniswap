@@ -3,9 +3,9 @@ package libraries
 import (
 	"math/big"
 
+	"github.com/aicora/go-uniswap/core/utils"
 	"github.com/pkg/errors"
 
-	"github.com/aicora/go-uniswap/utils"
 	"github.com/ethereum/go-ethereum/common"
 )
 

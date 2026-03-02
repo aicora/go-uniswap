@@ -3,7 +3,7 @@ package libraries
 import (
 	"math/big"
 
-	"github.com/aicora/go-uniswap/utils"
+	"github.com/aicora/go-uniswap/core/utils"
 	"github.com/shopspring/decimal"
 )
 
