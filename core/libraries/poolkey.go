@@ -6,6 +6,7 @@ import (
 
 	"github.com/aicora/go-uniswap/core/utils"
 	"github.com/ethereum/go-ethereum/accounts/abi"
+	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/crypto"
 )
 
@@ -89,17 +90,22 @@ func (p *PoolKey) ToId() (PoolId, error) {
 		{Type: hooks},
 	}
 
+	hooksAddr := common.HexToAddress("0x0000000000000000000000000000000000000000")
+	if p.Hooks != nil {
+		hooksAddr = p.Hooks.Address()
+	}
+
 	packed, err := arguments.Pack(
 		p.Currency0.Address(),
 		p.Currency1.Address(),
 		big.NewInt(int64(p.Fee)),
 		big.NewInt(int64(p.TickSpacing)),
-		p.Hooks.Address(),
+		hooksAddr,
 	)
 	if err != nil {
 		return PoolId{}, err
 	}
-
+	
 	// Compute keccak256 hash to produce PoolId
 	return PoolId(crypto.Keccak256Hash(packed)), nil
 }

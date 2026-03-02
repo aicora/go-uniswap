@@ -175,7 +175,7 @@ func (pm *PoolManager) ModifyLiquidity(key libraries.PoolKey, params types.Modif
 	if err != nil {
 		return libraries.ZeroBalanceDelta, libraries.ZeroBalanceDelta, err
 	}
-
+	
 	ownerDelta = principalDelta.Add(feesAccrued)
 
 	pm.accountPoolBalanceDelta(key, ownerDelta, owner)
@@ -238,6 +238,9 @@ func (pm *PoolManager) Swap(key libraries.PoolKey, params types.SwapParams, owne
 		},
 		inputCurrency.Address(),
 	)
+	if err != nil {
+		return libraries.ZeroBalanceDelta, err
+	}
 
 	pm.accountPoolBalanceDelta(key, swapDelta, owner)
 
@@ -308,7 +311,7 @@ func (pm *PoolManager) swap(pool *libraries.Pool, params libraries.SwapParams, i
 	if err != nil {
 		return libraries.ZeroBalanceDelta, err
 	}
-
+	
 	if amountToProtocol.Sign() > 0 {
 		pm.updateProtocolFees(inputCurrency, amountToProtocol)
 	}
@@ -323,6 +326,9 @@ func (pm *PoolManager) swap(pool *libraries.Pool, params libraries.SwapParams, i
 func (pm *PoolManager) updateProtocolFees(currency common.Address, amount *big.Int) {
 	if amount.Sign() == 0 {
 		return
+	}
+	if pm.protocolFeesAccrueds[currency] == nil {
+		pm.protocolFeesAccrueds[currency] = big.NewInt(0)
 	}
 	pm.protocolFeesAccrueds[currency] = new(big.Int).Add(pm.protocolFeesAccrueds[currency], amount)
 }
