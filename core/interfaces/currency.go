@@ -14,7 +14,7 @@ type ICurrency interface {
 	ChainId() uint
 
 	// Decimals returns the number of decimals the token uses.
-	Decimals() uint
+	Decimals() uint8
 
 	// Symbol returns the token symbol (e.g., "ETH", "USDT").
 	Symbol() string

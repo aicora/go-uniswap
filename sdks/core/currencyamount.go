@@ -172,7 +172,7 @@ func (c *CurrencyAmount) ToSignificant(significantDigits int32) string {
 //	raw = 1234567
 //	ToFixed(2) => "1.23"
 func (c *CurrencyAmount) ToFixed(decimalPlaces int32) string {
-	if uint(decimalPlaces) > c.Currency.Decimals() {
+	if (decimalPlaces < 0 && (-decimalPlaces) > int32(c.Currency.Decimals())) || (decimalPlaces > 0 && decimalPlaces > int32(c.Currency.Decimals())) {
 		panic("DECIMAL_PLACES_EXCEED_TOKEN_DECIMALS")
 	}
 

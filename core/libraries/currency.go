@@ -35,7 +35,7 @@ type Currency struct {
 	isNative bool           // true if the currency is the native token of the chain
 	address  common.Address // canonical token address
 	chainId  uint           // chain ID
-	decimals uint           // number of token decimals (must be < 255)
+	decimals uint8          // number of token decimals
 	symbol   string         // token symbol
 	name     string         // token name
 }
@@ -45,20 +45,13 @@ type Currency struct {
 // Parameters:
 //   - chainID: the blockchain chain ID
 //   - address: token address; empty or zero address indicates native token
-//   - decimals: number of token decimals (must be < 255)
+//   - decimals: number of token decimals
 //   - symbol: token symbol
 //   - name: token name
 //
 // Returns:
 //   - ICurrency instance representing the token
-//
-// Panics:
-//   - if decimals >= 255
-func NewCurrency(chainID uint, address common.Address, decimals uint, symbol string, name string) *Currency {
-	if decimals >= 255 {
-		panic("Token currency decimals must be less than 255")
-	}
-
+func NewCurrency(chainID uint, address common.Address, decimals uint8, symbol string, name string) *Currency {
 	return &Currency{
 		isNative: isNative(address),
 		address:  address,
@@ -85,7 +78,7 @@ func (c *Currency) ChainId() uint {
 }
 
 // Decimals returns the number of decimals used by the token.
-func (c *Currency) Decimals() uint {
+func (c *Currency) Decimals() uint8 {
 	return c.decimals
 }
 
