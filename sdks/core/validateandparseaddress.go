@@ -29,8 +29,8 @@ func CheckValidAddress(address string) (string, error) {
 // ValidateAndParseAddress validates and returns the checksummed version of an Ethereum address.
 //
 // This function performs the following steps:
-//   1. Checks whether the input address is a valid hex address
-//   2. Converts the address to the canonical EIP-55 checksum format using go-ethereum's HexToAddress
+//  1. Checks whether the input address is a valid hex address
+//  2. Converts the address to the canonical EIP-55 checksum format using go-ethereum's HexToAddress
 //
 // Parameters:
 //   - address: the Ethereum address string to validate and parse
