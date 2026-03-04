@@ -1,4 +1,6 @@
-package libraries
+package utils
+
+import "github.com/aicora/go-uniswap/core/libraries"
 
 /**
  * ComputePriceImpact calculates the **price impact** of a trade relative to the mid price.
@@ -48,11 +50,11 @@ package libraries
  *   - Price impact is typically used to display slippage risk to users or
  *     to optimize routing.
  */
-func ComputePriceImpact(midPrice *Price, inputAmount, outputAmount *CurrencyAmount) (*Percent, error) {
+func ComputePriceImpact(midPrice *libraries.Price, inputAmount, outputAmount *libraries.CurrencyAmount) (*libraries.Percent, error) {
 	token1Amount, err := midPrice.Quote(inputAmount)
 	if err != nil {
 		return nil, err
 	}
 	priceImpact := token1Amount.Subtract(outputAmount).Divide(token1Amount.Fraction)
-	return NewPercent(priceImpact.Numerator, priceImpact.Denominator), nil
+	return libraries.NewPercent(priceImpact.Numerator, priceImpact.Denominator), nil
 }
