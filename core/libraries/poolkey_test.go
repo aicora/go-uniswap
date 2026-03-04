@@ -3,6 +3,7 @@ package libraries
 import (
 	"testing"
 
+	"github.com/aicora/go-uniswap/core/interfaces"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/stretchr/testify/require"
 )
@@ -15,6 +16,12 @@ func (m mockHooks) Address() common.Address {
 	return m.addr
 }
 
+type mockCurrency struct {
+	chainId  uint
+	address  common.Address
+	decimals uint
+}
+
 func TestPoolKey_ToId(t *testing.T) {
 	tokenA := NewCurrency(1, common.HexToAddress("0x558AFaF6FeF52395D558F9fc1ab18A08C7A7548b"), 18, "A", "TokenA")
 	tokenB := NewCurrency(1, common.HexToAddress("0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"), 18, "B", "TokenB")
@@ -22,11 +29,11 @@ func TestPoolKey_ToId(t *testing.T) {
 
 	tests := []struct {
 		name      string
-		currency0 ICurrency
-		currency1 ICurrency
+		currency0 interfaces.ICurrency
+		currency1 interfaces.ICurrency
 		fee       LPFee
 		tickSpace int
-		hooks     IHooks
+		hooks     interfaces.IHooks
 		wantSwap  bool
 	}{
 		{

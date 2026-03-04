@@ -1,4 +1,4 @@
-package utils
+package sdkcore
 
 import "golang.org/x/exp/slices"
 
@@ -7,10 +7,11 @@ import "golang.org/x/exp/slices"
 // Returns the removed item if any, otherwise nil.
 //
 // Parameters:
-//   items      - slice of T, already sorted
-//   add        - item to insert
-//   maxSize    - maximum allowed slice size, must be > 0
-//   comparator - function returning negative if a < b, 0 if a == b, positive if a > b
+//
+//	items      - slice of T, already sorted
+//	add        - item to insert
+//	maxSize    - maximum allowed slice size, must be > 0
+//	comparator - function returning negative if a < b, 0 if a == b, positive if a > b
 //
 // Notes:
 //   - The slice is modified in-place
@@ -42,7 +43,7 @@ func SortedInsert[T any](items *[]T, add T, maxSize int, comparator func(a, b T)
 	insertIdx, _ := slices.BinarySearchFunc(*items, add, comparator)
 
 	// insert into slice
-	*items = append(*items, *new(T))          // expand slice
+	*items = append(*items, *new(T)) // expand slice
 	copy((*items)[insertIdx+1:], (*items)[insertIdx:])
 	(*items)[insertIdx] = add
 

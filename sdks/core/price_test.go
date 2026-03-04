@@ -1,4 +1,4 @@
-package libraries
+package sdkcore
 
 import (
 	"math/big"
@@ -7,15 +7,15 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 )
 
-func newETH() ICurrency {
+func newETH() *Currency {
 	return NewCurrency(1, common.HexToAddress("0xABCDEF1234567890abcdef1234567890abcdef13"), 18, "ETH", "ETH Token")
 }
 
-func newUSDC() ICurrency {
+func newUSDC() *Currency {
 	return NewCurrency(1, common.HexToAddress("0xABCDEF1234567890abcdef1234567890abcdef12"), 6, "USDC", "USDC Token")
 }
 
-func newDAI() ICurrency {
+func newDAI() *Currency {
 	return NewCurrency(1, common.HexToAddress("0xABCDEF1234567890abcdef1234567890abcdef11"), 18, "DAI", "DAI Token")
 }
 

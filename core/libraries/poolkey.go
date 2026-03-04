@@ -4,6 +4,7 @@ import (
 	"encoding/hex"
 	"math/big"
 
+	"github.com/aicora/go-uniswap/core/interfaces"
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/crypto"
@@ -33,11 +34,11 @@ func (p PoolId) String() string {
 //   - TickSpacing: tick spacing, must fit int24
 //   - Hooks: optional hooks contract that implements pool callbacks
 type PoolKey struct {
-	Currency0   ICurrency
-	Currency1   ICurrency
+	Currency0   interfaces.ICurrency
+	Currency1   interfaces.ICurrency
 	Fee         LPFee
 	TickSpacing int
-	Hooks       IHooks
+	Hooks       interfaces.IHooks
 }
 
 // ToId computes the PoolId for this PoolKey.

@@ -1,4 +1,4 @@
-package utils
+package sdkcore
 
 import (
 	"reflect"
@@ -9,12 +9,12 @@ func TestSortedInsertInt(t *testing.T) {
 	comparator := func(a, b int) int { return a - b }
 
 	tests := []struct {
-		name         string
-		initial      []int
-		add          int
-		maxSize      int
-		wantSlice    []int
-		wantRemoved  *int
+		name        string
+		initial     []int
+		add         int
+		maxSize     int
+		wantSlice   []int
+		wantRemoved *int
 	}{
 		{
 			name:      "insert into empty slice",
@@ -31,19 +31,19 @@ func TestSortedInsertInt(t *testing.T) {
 			wantSlice: []int{1, 3, 5, 7},
 		},
 		{
-			name:      "insert into full slice, smaller than last",
-			initial:   []int{1, 3, 5},
-			add:       4,
-			maxSize:   3,
-			wantSlice: []int{1, 3, 4},
+			name:        "insert into full slice, smaller than last",
+			initial:     []int{1, 3, 5},
+			add:         4,
+			maxSize:     3,
+			wantSlice:   []int{1, 3, 4},
 			wantRemoved: func() *int { x := 5; return &x }(),
 		},
 		{
-			name:      "insert into full slice, larger than last",
-			initial:   []int{1, 3, 5},
-			add:       6,
-			maxSize:   3,
-			wantSlice: []int{1, 3, 5},
+			name:        "insert into full slice, larger than last",
+			initial:     []int{1, 3, 5},
+			add:         6,
+			maxSize:     3,
+			wantSlice:   []int{1, 3, 5},
 			wantRemoved: func() *int { x := 6; return &x }(),
 		},
 		{

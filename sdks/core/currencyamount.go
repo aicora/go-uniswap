@@ -1,4 +1,4 @@
-package libraries
+package sdkcore
 
 import (
 	"math/big"
@@ -39,7 +39,7 @@ type CurrencyAmount struct {
 	*Fraction
 
 	// Currency metadata (symbol, decimals, chain info).
-	Currency ICurrency
+	Currency *Currency
 
 	// DecimalScale is 10^currency.Decimals().
 	// Used to convert between raw integer and human-readable representation.
@@ -58,7 +58,7 @@ type CurrencyAmount struct {
 // Equivalent to:
 //
 //	newCurrencyAmount(currency, rawAmount, 1)
-func FromRawAmount(currency ICurrency, rawAmount *big.Int) *CurrencyAmount {
+func FromRawAmount(currency *Currency, rawAmount *big.Int) *CurrencyAmount {
 	return newCurrencyAmount(currency, rawAmount, big.NewInt(1))
 }
 
@@ -69,7 +69,7 @@ func FromRawAmount(currency ICurrency, rawAmount *big.Int) *CurrencyAmount {
 //
 // Example:
 // (1 / 3) token before final rounding.
-func FromFractionalAmount(currency ICurrency, numerator, denominator *big.Int) *CurrencyAmount {
+func FromFractionalAmount(currency *Currency, numerator, denominator *big.Int) *CurrencyAmount {
 	return newCurrencyAmount(currency, numerator, denominator)
 }
 
@@ -80,7 +80,7 @@ func FromFractionalAmount(currency ICurrency, numerator, denominator *big.Int) *
 //
 // Panics:
 // If the integer quotient exceeds MaxUint256.
-func newCurrencyAmount(currency ICurrency, numerator, denominator *big.Int) *CurrencyAmount {
+func newCurrencyAmount(currency *Currency, numerator, denominator *big.Int) *CurrencyAmount {
 	f := NewFraction(numerator, denominator)
 
 	if f.Quotient().Cmp(utils.MaxUint256) > 0 {

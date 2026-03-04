@@ -1,4 +1,4 @@
-package libraries
+package sdkcore
 
 import (
 	"math/big"
@@ -50,11 +50,11 @@ type Price struct {
 
 	// Token0 is the base currency (input).
 	// This corresponds to the denominator of the price fraction.
-	Token0 ICurrency
+	Token0 *Currency
 
 	// Token1 is the quote currency (output).
 	// This corresponds to the numerator of the price fraction.
-	Token1 ICurrency
+	Token1 *Currency
 
 	// Scalar is a precomputed scaling factor used to adjust the raw
 	// fraction according to token decimals for display purposes.
@@ -79,7 +79,7 @@ type Price struct {
 //
 // This constructor does NOT normalize or reduce precision beyond
 // Fraction behavior.
-func NewPrice(token0, token1 ICurrency, denominator, numerator *big.Int) *Price {
+func NewPrice(token0, token1 *Currency, denominator, numerator *big.Int) *Price {
 	return &Price{
 		Fraction: NewFraction(numerator, denominator),
 		Token0:   token0,

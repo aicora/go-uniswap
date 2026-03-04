@@ -1,4 +1,4 @@
-package utils
+package sdkcore
 
 import (
 	"github.com/ethereum/go-ethereum/common"
