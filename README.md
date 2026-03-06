@@ -12,12 +12,15 @@
 
 </div>
 
-# go‑uniswap
+## W3X
 
-> **go‑uniswap** — A centralized Go implementation of the Uniswap protocol.
+w3x is a Web3 SDK enabling multi-chain trading, payments, wallets, and cross-chain operations through a single, unified API. Perfect for building SaaS platforms, DeFi aggregators, payment gateways, and wallet solutions quickly and securely.
 
-This repository implements the core logic of Uniswap (v4(>=)‑style) in Go — including swap math, liquidity management, ticks, and position accounting — in a clean, testable, and extensible way.
-It’s designed for centralized engines, simulation, backtesting, and quoting engines.
+## Quick Start
+
+```bash
+go get github.com/aicora/w3x
+```
 
 ## Changelog
 
