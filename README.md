@@ -12,10 +12,6 @@
 
 </div>
 
-## W3X
-
-w3x is a Web3 SDK enabling multi-chain trading, payments, wallets, and cross-chain operations through a single, unified API. Perfect for building SaaS platforms, DeFi aggregators, payment gateways, and wallet solutions quickly and securely.
-
 ## Quick Start
 
 ```bash
@@ -28,16 +24,12 @@ Detailed changes for each release are documented in the [release notes](https://
 
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=aicora/w3x&type=timeline&legend=top-left)](https://www.star-history.com/#aicora/w3x&type=timeline&legend=top-left)
+[![Star History Chart](https://api.star-history.com/image?repos=aicora/w3x&type=timeline&legend=top-left)](https://www.star-history.com/?type=timeline&legend=top-left&repos=aicora%2Fw3x)
 
 ## Contribution
 
 Thank you to all the people who already contributed to w3x!
 
-![Contributors](https://contrib.rocks/image?repo=aicora/w3x)
-
-## License
-
-[MIT](https://opensource.org/licenses/MIT)
-
-Copyright (c) 2026-present, Aicora
+<a href="https://github.com/aicora/w3x/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=aicora/w3x" />
+</a>
